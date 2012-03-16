@@ -5,7 +5,6 @@ require 'yaml'
 require 'logger'
 
 configure do
-	enable :logging
 	Log = Logger.new("debug.log")
 	Log.level  = Logger::INFO
 	set :port, 3333
@@ -18,8 +17,12 @@ $configuration = YAML::load_file($config_file)
 post '/poked' do
 	json_push = JSON.parse params[:payload]
 	local_repo = $configuration[json_push['repository']['name']]
-	Log.info "New info from repo named: #{local_repo}"
-	Log.info params
+
+	if local_repo.nil?
+		Log.info "Sorry, no configuration for repo named #{json_push['repository']['name']}"
+		halt 200
+	end
+
 	Log.info "Updating #{local_repo}"
 	out = `cd #{local_repo} && git pull origin master`
 	Log.info "Result of update #{out}"
