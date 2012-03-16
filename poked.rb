@@ -7,6 +7,7 @@ configure do
 	enable :logging
 	Log = Logger.new("debug.log")
 	Log.level  = Logger::INFO
+	set :port, 3333
 end
 
 #Sinatra Classic app
