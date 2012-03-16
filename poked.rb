@@ -28,13 +28,3 @@ post '/poked' do
 	Log.info "Result of update #{out}"
 	"pokeD OK"
 end
-
-get '/:r' do
-	Log.info params
-	#sometimes wants to grab favicon. stupid..
-	pass if params[:r] == 'favicon.ico'
-	local_repo = $configuration[params[:r]]
-	Log.info "Updating #{local_repo}"
-	out = `cd #{local_repo} && git pull origin master`
-	Log.info "result of update: #{out}"
-end
