@@ -3,6 +3,10 @@ require 'sinatra'
 require 'json'
 require 'yaml'
 require 'logger'
+#Sinatra Classic app
+
+#probably want to change this for your setup
+Key = "blargh"
 
 configure do
 	Log = Logger.new("debug.log")
@@ -10,13 +14,18 @@ configure do
 	set :port, 3333
 end
 
-#Sinatra Classic app
-$config_file = ARGV[0] || 'repo_map.yml'
-$configuration = YAML::load_file($config_file)
+#re-read the repo from repo_map.yml each time.
+#allows us to change the file without having to restart sinatra.
+def find_repo_path (repo_from_github)
+	config = YAML::load_file('repo_map.yml')
+	config[repo_from_github]
+end
 
-post '/poked' do
+post '/poked/:key' do
+	halt "sorry" unless params[:key] == Key
+
 	json_push = JSON.parse params[:payload]
-	local_repo = $configuration[json_push['repository']['name']]
+	local_repo = find_repo_path json_push['repository']['name']
 
 	if local_repo.nil?
 		Log.info "Sorry, no configuration for repo named #{json_push['repository']['name']}"
