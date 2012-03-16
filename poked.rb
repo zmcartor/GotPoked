@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'sinatra'
 require 'json'
 require 'yaml'
@@ -17,6 +18,7 @@ $configuration = YAML::load_file($config_file)
 post '/poked' do
 	json_push = JSON.parse params[:payload]
 	local_repo = $configuration[json_push['repository']['name']]
+	Log.info "New info from repo named: #{local_repo}"
 	Log.info params
 	Log.info "Updating #{local_repo}"
 	out = `cd #{local_repo} && git pull origin master`
