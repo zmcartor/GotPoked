@@ -1,0 +1,10 @@
+Poked - Simple Sinatra/Github post-receive server.
+
+In Lieu of an actual build process, this server receives Github post-receive hooks and
+updates the appropriate local git repo. That's really it.
+
+Repo mapping is done via a yaml configuration file. A 'secret' param has been added for extra
+security between github --> you , but don't count on it. This is primarily for dev environments.
+
+Have fun!
+_Zach
