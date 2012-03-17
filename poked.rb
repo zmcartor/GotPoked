@@ -5,9 +5,6 @@ require 'yaml'
 require 'logger'
 #Sinatra Classic app
 
-#probably want to change this for your setup
-Key = "blargh"
-
 configure do
 	Log = Logger.new("debug.log")
 	Log.level  = Logger::INFO
@@ -21,8 +18,7 @@ def find_repo_path (repo_from_github)
 	config[repo_from_github]
 end
 
-post '/poked/:key' do
-	halt "sorry" unless params[:key] == Key
+post '/poked' do
 
 	json_push = JSON.parse params[:payload]
 	local_repo = find_repo_path json_push['repository']['name']
